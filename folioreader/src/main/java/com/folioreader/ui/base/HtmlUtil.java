@@ -1,6 +1,7 @@
 package com.folioreader.ui.base;
 
 import android.content.Context;
+
 import com.folioreader.Config;
 import com.folioreader.Constants;
 import com.folioreader.R;
@@ -20,26 +21,32 @@ public final class HtmlUtil {
      */
     public static String getHtmlContent(Context context, String htmlContent, Config config) {
         int backgroundColor = config.getBackgroundColor();
-        String cssPath="";
-        switch (backgroundColor) {
-            case 0:
-                cssPath =
-                        String.format(context.getString(R.string.css_tag), "file:///android_asset/css/Style.css");
-                break;
-            case 1:
-                cssPath =
-                        String.format(context.getString(R.string.css_tag), "file:///android_asset/css/StyleYellow.css");
-                break;
-            case 2:
-                cssPath =
-                        String.format(context.getString(R.string.css_tag), "file:///android_asset/css/StyleAcik.css");
-                break;
-            case 3:
-                cssPath =
-                        String.format(context.getString(R.string.css_tag), "file:///android_asset/css/StyleGreen.css");
-                break;
-                default:
-                    break;
+        String cssPath = "";
+        if (context != null) {
+            try {
+                switch (backgroundColor) {
+                    case 0:
+                        cssPath =
+                                String.format(context.getString(R.string.css_tag), "file:///android_asset/css/Style.css");
+                        break;
+                    case 1:
+                        cssPath =
+                                String.format(context.getString(R.string.css_tag), "file:///android_asset/css/StyleYellow.css");
+                        break;
+                    case 2:
+                        cssPath =
+                                String.format(context.getString(R.string.css_tag), "file:///android_asset/css/StyleAcik.css");
+                        break;
+                    case 3:
+                        cssPath =
+                                String.format(context.getString(R.string.css_tag), "file:///android_asset/css/StyleGreen.css");
+                        break;
+                    default:
+                        break;
+                }
+            } catch (NullPointerException ignored) {
+
+            }
         }
 
 
@@ -77,7 +84,11 @@ public final class HtmlUtil {
                 + "<meta name=\"viewport\" content=\"height=device-height, user-scalable=no\" />";
 
         String toInject = "\n" + cssPath + "\n" + jsPath + "\n</head>";
-        htmlContent = htmlContent.replace("</head>", toInject);
+        try {
+            htmlContent = htmlContent.replace("</head>", toInject);
+        } catch (NullPointerException ignored) {
+
+        }
 
         String classes = "";
         switch (config.getFont()) {
