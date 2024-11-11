@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -83,12 +84,11 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED){
+                        == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
                 }
-                else {
-                    ActivityCompat.requestPermissions(HomeActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
-                }
-                File file = new File(getFilesDir().getAbsolutePath()+"/save/12345.json");
+                File file = new File(getFilesDir().getAbsolutePath() + "/save/12345.json");
                 ReadLocator readLocator;
 
 
@@ -110,7 +110,7 @@ public class HomeActivity extends AppCompatActivity
                         String bookid = readLocator.getBookId();
                         String locator = readLocator.toJson();
                         assert locator != null;
-                        txt_yaz(bookid,locator);
+                        txt_yaz(bookid, locator);
                         Log.i(LOG_TAG, "-> saveReadLocator -> " + readLocator.toJson());
                     }
                 });
@@ -119,8 +119,7 @@ public class HomeActivity extends AppCompatActivity
                     folioReader.setReadLocator(readLocator);
                 }
                 folioReader.setConfig(config, true)
-                        .openBook("file:///android_asset/TheSilverChair.epub");
-//                        .openBook("file:///android_asset/guru.epub");
+                        .openBook("file:///android_asset/guru.epub");
             }
         });
     }
@@ -175,7 +174,7 @@ public class HomeActivity extends AppCompatActivity
         BufferedReader in = null;
         try {
             StringBuilder buf = new StringBuilder();
-            File file = new File(getFilesDir().getAbsolutePath()+"/save/"+name+".json");
+            File file = new File(getFilesDir().getAbsolutePath() + "/save/" + name + ".json");
             FileInputStream is = new FileInputStream(file);
             in = new BufferedReader(new InputStreamReader(is));
 
@@ -202,9 +201,10 @@ public class HomeActivity extends AppCompatActivity
         }
         return null;
     }
-    public void txt_yaz(String kitap,String locator){
-        FileOutputStream fos=null;
-        String folder = getFilesDir().getAbsolutePath()+"/save/"+kitap+".json";
+
+    public void txt_yaz(String kitap, String locator) {
+        FileOutputStream fos = null;
+        String folder = getFilesDir().getAbsolutePath() + "/save/" + kitap + ".json";
 //        File file = new File(getFilesDir().getAbsolutePath()+"/save/"+kitap+".json");
         try {
             fos = new FileOutputStream(new File(folder));
@@ -221,6 +221,7 @@ public class HomeActivity extends AppCompatActivity
             }
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
